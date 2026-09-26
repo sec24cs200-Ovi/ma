@@ -1,0 +1,61 @@
+{
+  "frequency": "1hour",
+  "lastPing": "2026-09-18T20:36:11.239Z",
+  "contacts": [
+    {
+      "role": "Given Emergency Mobile",
+      "name": "Emergency Contact",
+      "phone": "+91 81225 66828",
+      "channel": "Direct In-App Satellite & SMS",
+      "status": "SYNCED"
+    },
+    {
+      "role": "Father",
+      "name": "M. Karuppan",
+      "phone": "+91 98401 23456",
+      "channel": "SMS + Relay",
+      "status": "SYNCED"
+    },
+    {
+      "role": "Mother",
+      "name": "K. Lakshmi",
+      "phone": "+91 98402 34567",
+      "channel": "SMS + Relay",
+      "status": "SYNCED"
+    },
+    {
+      "role": "Spouse",
+      "name": "R. Selvi",
+      "phone": "+91 94432 78901",
+      "channel": "WhatsApp + SMS",
+      "status": "SYNCED"
+    }
+  ],
+  "logs": [
+    {
+      "time": "6:55:51 AM",
+      "coords": "9.2876° N, 79.3129° E",
+      "note": "🚨 DIRECT SYSTEM SOS: Dispatched & Delivered to 8122566828 (NavIC Satellite & SMS Gateway)"
+    },
+    {
+      "time": "6:54:25 AM",
+      "coords": "9.2876° N, 79.3129° E",
+      "note": "🚨 DIRECT SYSTEM SOS: Dispatched & Delivered to 81225668288122566828 (NavIC Satellite & SMS Gateway)"
+    },
+    {
+      "time": "2:09:33 AM",
+      "coords": "09.2876, 79.3129",
+      "note": "🚨 DIRECT SYSTEM SOS: Dispatched & Delivered to 8122566828 (NavIC Satellite & SMS Gateway)"
+    },
+    {
+      "time": "14:00 PM",
+      "coords": "09.2876° N, 79.3129° E",
+      "note": "Delivered to Parents & Spouse (SMS/WhatsApp)"
+    },
+    {
+      "time": "13:00 PM",
+      "coords": "09.2541° N, 79.2883° E",
+      "note": "Delivered to Parents & Spouse (SMS/WhatsApp)"
+    }
+  ]
+}

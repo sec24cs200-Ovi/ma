@@ -1,0 +1,30 @@
+{
+  "name": "marine-ai",
+  "version": "2.0.0",
+  "description": "Marine AI – Agentic Marine Intelligence & Smart Fishing Decision Support (ISRO PS 26176)",
+  "main": "server.js",
+  "scripts": {
+    "postinstall": "npm --prefix client install",
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "dev:all": "node server.js",
+    "dev:client": "cd client && npm run dev",
+    "build": "cd client && npm run build",
+    "build:client": "cd client && npm run build"
+  },
+  "keywords": [
+    "marine-ai",
+    "isro",
+    "fishing",
+    "oceanography",
+    "iot",
+    "telemetry",
+    "agentic-ai"
+  ],
+  "author": "Marine AI Team",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

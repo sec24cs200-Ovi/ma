@@ -1,0 +1,33 @@
+[
+  {
+    "id": "AI-1789780870362",
+    "timestamp": "2026-09-19T01:21:10.362Z",
+    "query": "Is it safe to go to sea tomorrow morning?",
+    "region": "rameswaram",
+    "recommendation": "SAFE TO SAIL (Optimal Fishing Window: 04:00 AM - 11:30 AM)",
+    "confidence": "96% Confidence (Consensus: Weather & Ocean Analytics Agents)"
+  },
+  {
+    "id": "AI-1789768125106",
+    "timestamp": "2026-09-18T21:48:45.106Z",
+    "query": "Is it safe to go to sea tomorrow morning?",
+    "region": "rameswaram",
+    "recommendation": "SAFE TO SAIL (Optimal Fishing Window: 04:00 AM - 11:30 AM)",
+    "confidence": "96% Confidence (Consensus: Weather & Ocean Analytics Agents)"
+  },
+  {
+    "id": "AI-1789763868530",
+    "timestamp": "2026-09-18T20:37:48.531Z",
+    "query": "Is it safe to go to sea tomorrow morning?",
+    "region": "rameswaram",
+    "recommendation": "SAFE TO SAIL (Optimal Fishing Window: 04:00 AM - 11:30 AM)",
+    "confidence": "96% Confidence (Consensus: Weather & Ocean Analytics Agents)"
+  },
+  {
+    "timestamp": "2026-09-18T20:36:11.240Z",
+    "query": "Is it safe to go to sea tomorrow morning?",
+    "recommendation": "SAFE TO SAIL (Optimal Fishing Window: 04:00 AM - 11:30 AM)",
+    "confidence": "96%",
+    "region": "rameswaram"
+  }
+]

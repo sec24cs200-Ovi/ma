@@ -1,0 +1,28 @@
+[
+  {
+    "id": "PMMSY-2026-6497",
+    "submittedAt": "2026-09-18T20:41:39.147Z",
+    "applicantName": "K. Rameshan",
+    "vesselId": "IND-TN-10-MM-4421",
+    "schemeName": "Fishermen E-Grantz Educational Scholarship",
+    "studentName": "R. Karthik",
+    "courseLevel": "B.Sc Marine Biology",
+    "aadhaar": "XXXX-XXXX-4892",
+    "bankDetails": "SBI Rameswaram (SBIN0000912) - Ac: ***4410",
+    "status": "SUBMITTED_FAST_TRACK",
+    "approvalStage": "Stage 1: Biometric Verification & Coastal Aadhaar DBT Linked"
+  },
+  {
+    "id": "SCH-2026-8891",
+    "submittedAt": "2026-09-18T19:36:11.240Z",
+    "applicantName": "K. Rameshan",
+    "vesselId": "IND-TN-10-MM-4421",
+    "schemeName": "Fishermen's E-Grantz Educational Scholarship Scheme",
+    "studentName": "R. Karthik (Son)",
+    "courseLevel": "B.Sc Marine Biology / Fisheries Science",
+    "aadhaar": "XXXX-XXXX-4892",
+    "bankDetails": "SBI Rameswaram (SBIN0000912) - Ac: ***4410",
+    "status": "VERIFIED_BY_DOF",
+    "approvalStage": "Stage 2: District Fisheries Officer Sanction"
+  }
+]

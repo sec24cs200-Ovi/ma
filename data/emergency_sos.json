@@ -1,0 +1,149 @@
+[
+  {
+    "id": "SOS-1789781151419",
+    "timestamp": "2026-09-19T01:25:51.419Z",
+    "displayTime": "6:55:51 AM",
+    "vesselId": "IND-TN-10-MM-4421",
+    "captain": "K. Rameshan",
+    "recipientPhone": "+91 8122566828",
+    "coords": "9.2876° N, 79.3129° E",
+    "mapsLink": "https://maps.google.com/?q=9.2876,79.3129",
+    "network": "NavIC Marine Satellite & SMS Mesh",
+    "status": "DELIVERED",
+    "ackCode": "200_OK_DELIVERED",
+    "dispatches": [
+      {
+        "target": "Given Number (8122566828)",
+        "channel": "Direct In-App Satellite & SMS",
+        "status": "ACK RECEIVED"
+      },
+      {
+        "target": "Father: M. Karuppan (+91 98401 23456)",
+        "channel": "SMS + Relay",
+        "status": "ACK RECEIVED"
+      },
+      {
+        "target": "Mother: K. Lakshmi (+91 98402 34567)",
+        "channel": "SMS + Relay",
+        "status": "ACK RECEIVED"
+      },
+      {
+        "target": "Spouse: R. Selvi (+91 94432 78901)",
+        "channel": "Live WhatsApp + SMS",
+        "status": "DELIVERED"
+      },
+      {
+        "target": "Indian Coast Guard MRCC (1554)",
+        "channel": "NavIC Satellite Distress Transponder",
+        "status": "ALERT LOGGED"
+      },
+      {
+        "target": "Coastal Marine Police (Rameswaram)",
+        "channel": "VHF Emergency Relay Channel 16",
+        "status": "BEACON PULSING"
+      }
+    ]
+  },
+  {
+    "id": "SOS-1789781065696",
+    "timestamp": "2026-09-19T01:24:25.685Z",
+    "displayTime": "6:54:25 AM",
+    "vesselId": "IND-TN-10-MM-4421",
+    "captain": "K. Rameshan",
+    "recipientPhone": "+91 81225668288122566828",
+    "coords": "9.2876° N, 79.3129° E",
+    "mapsLink": "https://maps.google.com/?q=9.2876,79.3129",
+    "network": "NavIC Marine Satellite & SMS Mesh",
+    "status": "DELIVERED",
+    "ackCode": "200_OK_DELIVERED",
+    "dispatches": [
+      {
+        "target": "Given Number (81225668288122566828)",
+        "channel": "Direct In-App Satellite & SMS",
+        "status": "ACK RECEIVED"
+      },
+      {
+        "target": "Father: M. Karuppan (+91 98401 23456)",
+        "channel": "SMS + Relay",
+        "status": "ACK RECEIVED"
+      },
+      {
+        "target": "Mother: K. Lakshmi (+91 98402 34567)",
+        "channel": "SMS + Relay",
+        "status": "ACK RECEIVED"
+      },
+      {
+        "target": "Spouse: R. Selvi (+91 94432 78901)",
+        "channel": "Live WhatsApp + SMS",
+        "status": "DELIVERED"
+      },
+      {
+        "target": "Indian Coast Guard MRCC (1554)",
+        "channel": "NavIC Satellite Distress Transponder",
+        "status": "ALERT LOGGED"
+      },
+      {
+        "target": "Coastal Marine Police (Rameswaram)",
+        "channel": "VHF Emergency Relay Channel 16",
+        "status": "BEACON PULSING"
+      }
+    ]
+  },
+  {
+    "id": "SOS-1789763973795",
+    "timestamp": "2026-09-18T20:39:33.638Z",
+    "displayTime": "2:09:33 AM",
+    "vesselId": "IND-TN-10-MM-4421",
+    "captain": "K. Rameshan",
+    "recipientPhone": "+91 8122566828",
+    "coords": "09.2876, 79.3129",
+    "mapsLink": "https://maps.google.com/?q=09.2876,79.3129",
+    "network": "NavIC Marine Satellite & SMS Mesh",
+    "status": "DELIVERED",
+    "ackCode": "200_OK_DELIVERED",
+    "dispatches": [
+      {
+        "target": "Given Number (8122566828)",
+        "channel": "Direct In-App Satellite & SMS",
+        "status": "ACK RECEIVED"
+      },
+      {
+        "target": "Father: M. Karuppan (+91 98401 23456)",
+        "channel": "SMS + Relay",
+        "status": "ACK RECEIVED"
+      },
+      {
+        "target": "Mother: K. Lakshmi (+91 98402 34567)",
+        "channel": "SMS + Relay",
+        "status": "ACK RECEIVED"
+      },
+      {
+        "target": "Spouse: R. Selvi (+91 94432 78901)",
+        "channel": "Live WhatsApp + SMS",
+        "status": "DELIVERED"
+      },
+      {
+        "target": "Indian Coast Guard MRCC (1554)",
+        "channel": "NavIC Satellite Distress Transponder",
+        "status": "ALERT LOGGED"
+      },
+      {
+        "target": "Coastal Marine Police (Rameswaram)",
+        "channel": "VHF Emergency Relay Channel 16",
+        "status": "BEACON PULSING"
+      }
+    ]
+  },
+  {
+    "id": "SOS-INIT-001",
+    "timestamp": "2026-09-18T20:36:11.224Z",
+    "vesselId": "IND-TN-10-MM-4421",
+    "captain": "K. Rameshan",
+    "phone": "+91 81225 66828",
+    "coords": "09.2876° N, 79.3129° E",
+    "mapsLink": "https://maps.google.com/?q=09.2876,79.3129",
+    "status": "DELIVERED",
+    "network": "NavIC Satellite & SMS Gateway",
+    "ack": true
+  }
+]
