@@ -52,6 +52,54 @@ const REGIONAL_OCEAN_DATA = {
     tide: '+0.6m Flood Tide',
     safetyStatus: 'SAFE_TO_SAIL'
   },
+  kanyakumari: {
+    location: 'Kanyakumari, Tamil Nadu',
+    coords: [8.0780, 77.5520],
+    sst: 27.8,
+    chlorophyll: 3.8,
+    waveHeight: 1.1,
+    swellPeriod: 10.4,
+    windSpeed: 15.2,
+    windDirection: 195,
+    currentSpeed: 0.74,
+    currentDirection: 120,
+    salinity: 35.4,
+    visibility: 14.0,
+    tide: '+0.5m High Flood',
+    safetyStatus: 'SAFE_TO_SAIL'
+  },
+  chennai: {
+    location: 'Chennai Kasimedu, Tamil Nadu',
+    coords: [13.1250, 80.3050],
+    sst: 29.2,
+    chlorophyll: 3.4,
+    waveHeight: 0.6,
+    swellPeriod: 8.2,
+    windSpeed: 10.1,
+    windDirection: 85,
+    currentSpeed: 0.38,
+    currentDirection: 45,
+    salinity: 33.6,
+    visibility: 16.5,
+    tide: '+0.3m Moderate Tide',
+    safetyStatus: 'SAFE_TO_SAIL'
+  },
+  tuticorin: {
+    location: 'Thoothukudi, Tamil Nadu',
+    coords: [8.7850, 78.1750],
+    sst: 28.7,
+    chlorophyll: 3.6,
+    waveHeight: 0.9,
+    swellPeriod: 9.1,
+    windSpeed: 13.8,
+    windDirection: 140,
+    currentSpeed: 0.61,
+    currentDirection: 110,
+    salinity: 34.5,
+    visibility: 15.0,
+    tide: '+0.4m High Tide',
+    safetyStatus: 'SAFE_TO_SAIL'
+  },
   veraval: {
     location: 'Veraval, Gujarat',
     coords: [20.9042, 70.3670],
@@ -86,13 +134,31 @@ const REGIONAL_OCEAN_DATA = {
   }
 };
 
+REGIONAL_OCEAN_DATA.vizag = REGIONAL_OCEAN_DATA.visakhapatnam;
+REGIONAL_OCEAN_DATA.thoothukudi = REGIONAL_OCEAN_DATA.tuticorin;
+REGIONAL_OCEAN_DATA.kasimedu = REGIONAL_OCEAN_DATA.chennai;
+
+function normalizeRegion(raw) {
+  if (!raw) return 'rameswaram';
+  const clean = String(raw).toLowerCase().trim().replace(/[^a-z]/g, '');
+  if (clean.includes('kanya')) return 'kanyakumari';
+  if (clean.includes('chennai') || clean.includes('kasimedu')) return 'chennai';
+  if (clean.includes('tuticorin') || clean.includes('thoothu')) return 'tuticorin';
+  if (clean.includes('kochi') || clean.includes('cochin')) return 'kochi';
+  if (clean.includes('vizag') || clean.includes('visakha')) return 'visakhapatnam';
+  if (clean.includes('veraval')) return 'veraval';
+  if (clean.includes('paradip') || clean.includes('paradeep')) return 'paradip';
+  if (clean.includes('rames')) return 'rameswaram';
+  return clean;
+}
+
 /**
  * GET /api/telemetry/ocean
  * Returns current oceanographic telemetry for a region
  */
 router.get('/ocean', (req, res) => {
-  const region = (req.query.region || 'rameswaram').toLowerCase();
-  const data = REGIONAL_OCEAN_DATA[region] || REGIONAL_OCEAN_DATA.rameswaram;
+  const norm = normalizeRegion(req.query.region);
+  const data = REGIONAL_OCEAN_DATA[norm] || REGIONAL_OCEAN_DATA[req.query.region] || REGIONAL_OCEAN_DATA.rameswaram;
 
   // Add realistic micro-variations
   const liveSst = parseFloat((data.sst + (Math.random() * 0.2 - 0.1)).toFixed(1));

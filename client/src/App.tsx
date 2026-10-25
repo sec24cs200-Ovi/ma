@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
+import { BottomNav } from './components/BottomNav';
+import { MobileDrawer } from './components/MobileDrawer';
 import { ToastContainer, ToastMessage } from './components/Toast';
 import { SosModal } from './components/Modals/SosModal';
 import { FamilySchedulerModal } from './components/Modals/FamilySchedulerModal';
@@ -9,25 +11,24 @@ import { GovtSchemeModal } from './components/Modals/GovtSchemeModal';
 
 // Views
 import { DashboardView } from './components/Views/DashboardView';
+import { BoatSimulationView } from './components/Views/BoatSimulationView';
 import { AiAssistantView } from './components/Views/AiAssistantView';
 import { GisMapView } from './components/Views/GisMapView';
 import { PfzZonesView } from './components/Views/PfzZonesView';
-import { SeaSafetyView } from './components/Views/SeaSafetyView';
-import { SatelliteTelemetryView } from './components/Views/SatelliteTelemetryView';
 import { EquipmentView } from './components/Views/EquipmentView';
-import { RoutePlannerView } from './components/Views/RoutePlannerView';
 import { AlertsView } from './components/Views/AlertsView';
 import { MarineDataView } from './components/Views/MarineDataView';
 import { ServicesView } from './components/Views/ServicesView';
 import { GovtSchemesView } from './components/Views/GovtSchemesView';
 
 import { NavView, LanguageCode, PFZZone, CatchAuction, GovtScheme } from './types';
-import { INITIAL_AUCTIONS, PFZ_ZONES } from './data/mockData';
+import { INITIAL_AUCTIONS, getPfzZonesForRegion } from './data/mockData';
 
 export function App() {
   const [currentView, setCurrentView] = useState<NavView>('dashboard');
   const [activeRegion, setActiveRegion] = useState<string>('rameswaram');
   const [language, setLanguage] = useState<LanguageCode>('en');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Modals state
   const [isSosOpen, setIsSosOpen] = useState(false);
@@ -37,10 +38,29 @@ export function App() {
 
   // Data state
   const [auctions, setAuctions] = useState<CatchAuction[]>(INITIAL_AUCTIONS);
-  const [selectedZone, setSelectedZone] = useState<PFZZone | null>(PFZ_ZONES[0]);
+  const [selectedZone, setSelectedZone] = useState<PFZZone | null>(() => getPfzZonesForRegion('rameswaram')[0]);
+  const [marineDataTab, setMarineDataTab] = useState<'all' | 'safety' | 'telemetry' | 'route' | 'ocean'>('all');
   const [appliedSchemes, setAppliedSchemes] = useState<Record<string, boolean>>({
     'navic-transceiver': true,
   });
+
+  const handleNavigate = (view: NavView) => {
+    if (view === 'sea-safety') {
+      setMarineDataTab('safety');
+      setCurrentView('marine-data');
+    } else if (view === 'satellite-telemetry') {
+      setMarineDataTab('telemetry');
+      setCurrentView('marine-data');
+    } else if (view === 'route-planner') {
+      setMarineDataTab('route');
+      setCurrentView('marine-data');
+    } else {
+      if (view === 'marine-data') {
+        setMarineDataTab('all');
+      }
+      setCurrentView(view);
+    }
+  };
 
   // Toasts
   const [toasts, setToasts] = useState<ToastMessage[]>([
@@ -79,36 +99,46 @@ export function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#050b14] text-slate-100 font-sans selection:bg-cyan-500 selection:text-white">
-      {/* Top Fixed Header */}
+      {/* Top Mobile/Desktop Header */}
       <Header
         activeRegion={activeRegion}
         onRegionChange={setActiveRegion}
         language={language}
         onLanguageChange={setLanguage}
         onTriggerSos={() => setIsSosOpen(true)}
+        onOpenMenu={() => setIsMobileMenuOpen(true)}
       />
 
-      {/* Main Body: Sidebar + Dynamic Content View */}
+      {/* Main Body: Desktop Sidebar + Dynamic Content View */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Navigation Sidebar */}
+        {/* Navigation Sidebar (hidden on mobile, visible on desktop) */}
         <Sidebar
           currentView={currentView}
-          onSelectView={setCurrentView}
+          onSelectView={handleNavigate}
           language={language}
         />
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-y-auto bg-[#070e1b]/60">
+        <main className="flex-1 overflow-y-auto bg-[#070e1b]/60 pb-20 md:pb-4">
           {currentView === 'dashboard' && (
             <DashboardView
               activeRegion={activeRegion}
-              onNavigate={setCurrentView}
+              onNavigate={handleNavigate}
               onSelectZone={(zone) => {
                 setSelectedZone(zone);
-                setCurrentView('route-planner');
+                setMarineDataTab('route');
+                setCurrentView('marine-data');
               }}
               onOpenScheduler={() => setIsSchedulerOpen(true)}
               onOpenAuction={() => setIsAuctionOpen(true)}
+              onShowToast={addToast}
+            />
+          )}
+
+          {currentView === 'boat-simulation' && (
+            <BoatSimulationView
+              onShowToast={addToast}
+              onExitSimulation={() => setCurrentView('dashboard')}
             />
           )}
 
@@ -119,28 +149,27 @@ export function App() {
           {currentView === 'gis-map' && (
             <GisMapView
               activeRegion={activeRegion}
+              selectedZone={selectedZone}
               onSelectZone={(zone) => {
                 setSelectedZone(zone);
-                setCurrentView('route-planner');
+                setMarineDataTab('route');
+                setCurrentView('marine-data');
               }}
             />
           )}
 
           {currentView === 'pfz-zones' && (
             <PfzZonesView
-              onSelectZone={setSelectedZone}
-              onNavigateToRoute={() => setCurrentView('route-planner')}
-              onShowToast={addToast}
-            />
-          )}
-
-          {currentView === 'sea-safety' && (
-            <SeaSafetyView activeRegion={activeRegion} />
-          )}
-
-          {currentView === 'satellite-telemetry' && (
-            <SatelliteTelemetryView
               activeRegion={activeRegion}
+              onSelectZone={(zone) => {
+                setSelectedZone(zone);
+                setMarineDataTab('route');
+                setCurrentView('marine-data');
+              }}
+              onNavigateToRoute={() => {
+                setMarineDataTab('route');
+                setCurrentView('marine-data');
+              }}
               onShowToast={addToast}
             />
           )}
@@ -149,20 +178,28 @@ export function App() {
             <EquipmentView onShowToast={addToast} />
           )}
 
-          {currentView === 'route-planner' && (
-            <RoutePlannerView
-              activeRegion={activeRegion}
-              selectedZone={selectedZone}
-              onShowToast={addToast}
-            />
-          )}
-
           {currentView === 'alerts' && (
             <AlertsView activeRegion={activeRegion} />
           )}
 
-          {currentView === 'marine-data' && (
-            <MarineDataView activeRegion={activeRegion} />
+          {(currentView === 'marine-data' ||
+            currentView === 'sea-safety' ||
+            currentView === 'satellite-telemetry' ||
+            currentView === 'route-planner') && (
+            <MarineDataView
+              activeRegion={activeRegion}
+              selectedZone={selectedZone}
+              onShowToast={addToast}
+              initialTab={
+                currentView === 'sea-safety'
+                  ? 'safety'
+                  : currentView === 'satellite-telemetry'
+                  ? 'telemetry'
+                  : currentView === 'route-planner'
+                  ? 'route'
+                  : marineDataTab
+              }
+            />
           )}
 
           {currentView === 'services' && (
@@ -181,6 +218,29 @@ export function App() {
           )}
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation Bar */}
+      <BottomNav
+        currentView={currentView}
+        onSelectView={handleNavigate}
+        language={language}
+        onOpenMenu={() => setIsMobileMenuOpen(true)}
+      />
+
+      {/* Mobile Slide-Over Menu Drawer */}
+      <MobileDrawer
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        currentView={currentView}
+        onSelectView={handleNavigate}
+        activeRegion={activeRegion}
+        onRegionChange={setActiveRegion}
+        language={language}
+        onLanguageChange={setLanguage}
+        onTriggerSos={() => setIsSosOpen(true)}
+        onOpenScheduler={() => setIsSchedulerOpen(true)}
+        onOpenAuction={() => setIsAuctionOpen(true)}
+      />
 
       {/* Interactive Modals */}
       <SosModal

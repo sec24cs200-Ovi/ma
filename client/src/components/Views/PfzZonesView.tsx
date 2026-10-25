@@ -1,19 +1,60 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Fish, Sparkles, Navigation, Anchor, AlertTriangle, ShieldCheck } from 'lucide-react';
-import { PFZ_ZONES } from '../../data/mockData';
+import { REGIONS, getPfzZonesForRegion } from '../../data/mockData';
 import { PFZZone } from '../../types';
 
 interface PfzZonesViewProps {
+  activeRegion?: string;
   onSelectZone: (zone: PFZZone) => void;
   onNavigateToRoute: () => void;
   onShowToast: (title: string, msg: string, type: 'info' | 'success' | 'error') => void;
 }
 
 export const PfzZonesView: React.FC<PfzZonesViewProps> = ({
+  activeRegion = 'rameswaram',
   onSelectZone,
   onNavigateToRoute,
   onShowToast,
 }) => {
+  const region = REGIONS[activeRegion] || REGIONS.rameswaram;
+  const [zones, setZones] = useState<PFZZone[]>(() => getPfzZonesForRegion(activeRegion));
+
+  useEffect(() => {
+    // Immediate sync with regional mock data
+    setZones(getPfzZonesForRegion(activeRegion));
+
+    // Live API fetch to synchronize with backend /api/pfz/zones
+    fetch(`/api/pfz/zones?region=${encodeURIComponent(activeRegion)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.zones && data.zones.length > 0) {
+          const apiZones: PFZZone[] = data.zones.map((z: any) => ({
+            id: z.id,
+            name: z.name,
+            direction: z.direction || `${z.distanceNM} NM ${z.heading || ''}`,
+            distanceNM: z.distanceNM,
+            confidence: typeof z.confidence === 'number' ? z.confidence : parseInt(z.score) || 85,
+            sst: typeof z.sst === 'number' ? z.sst : parseFloat(z.sst) || 28.0,
+            chlorophyll: typeof z.chlorophyll === 'number' ? z.chlorophyll : parseFloat(z.chl) || 3.0,
+            depth: typeof z.depth === 'number' ? z.depth : parseInt(z.depth) || 35,
+            species: z.species || [],
+            lat: z.lat || z.coords?.[0],
+            lng: z.lng || z.coords?.[1],
+            status:
+              z.status === 'optimal' || z.status === 'High Potential'
+                ? 'optimal'
+                : z.status === 'restricted' || (z.status && String(z.status).toLowerCase().includes('unsafe'))
+                ? 'restricted'
+                : 'moderate',
+          }));
+          setZones(apiZones);
+        }
+      })
+      .catch(() => {
+        // Keeps local precomputed regional zones
+      });
+  }, [activeRegion]);
+
   const handleLockZone = (zone: PFZZone) => {
     onSelectZone(zone);
     onShowToast('Target PFZ Locked', `${zone.name} selected as active destination.`, 'success');
@@ -30,13 +71,13 @@ export const PfzZonesView: React.FC<PfzZonesViewProps> = ({
           </div>
           <div>
             <h2 className="text-base font-bold text-white flex items-center gap-2">
-              ISRO OceanSat-3 Potential Fishing Zones (PFZ)
+              ISRO OceanSat-3 Potential Fishing Zones (PFZ) – {region.name}
               <span className="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-bold">
                 OCM-3 SATELLITE DERIVED
               </span>
             </h2>
             <p className="text-xs text-slate-400">
-              Generated via chlorophyll concentration and sea surface temperature thermal boundary gradients.
+              Live oceanographic feeding grounds identified off {region.name} ({region.state}) based on SST thermal gradients & chlorophyll-a upwelling.
             </p>
           </div>
         </div>
@@ -44,7 +85,7 @@ export const PfzZonesView: React.FC<PfzZonesViewProps> = ({
 
       {/* Grid of Zones */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {PFZ_ZONES.map((zone) => {
+        {zones.map((zone) => {
           const isOptimal = zone.status === 'optimal';
           const isRestricted = zone.status === 'restricted';
 

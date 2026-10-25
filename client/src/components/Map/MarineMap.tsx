@@ -1,17 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
-import { Layers, Eye, ShieldAlert, Fish, Sparkles, Navigation } from 'lucide-react';
-import { REGIONS, PFZ_ZONES } from '../../data/mockData';
+import { Layers, Eye, ShieldAlert, Fish, Sparkles, Navigation, Route } from 'lucide-react';
+import { REGIONS, getPfzZonesForRegion, getSafeSeaRoute } from '../../data/mockData';
+import { IMBL_LEAFLET_COORDS } from '../../utils/geospatial';
 import { PFZZone } from '../../types';
 
 interface MarineMapProps {
   activeRegion: string;
+  selectedZone?: PFZZone | null;
   onSelectZone?: (zone: PFZZone) => void;
   fullScreen?: boolean;
 }
 
 export const MarineMap: React.FC<MarineMapProps> = ({
   activeRegion,
+  selectedZone,
   onSelectZone,
   fullScreen = false,
 }) => {
@@ -25,6 +28,7 @@ export const MarineMap: React.FC<MarineMapProps> = ({
     chlorophyll: true,
     wind: false,
     geofence: true,
+    route: true,
   });
 
   const toggleLayer = (key: keyof typeof activeLayers) => {
@@ -63,7 +67,7 @@ export const MarineMap: React.FC<MarineMapProps> = ({
     };
   }, [activeRegion]);
 
-  // Update Layers when toggles or region change
+  // Update Layers when toggles, selectedZone, or region change
   useEffect(() => {
     const map = mapInstanceRef.current;
     const layerGroup = layerGroupRef.current;
@@ -71,8 +75,9 @@ export const MarineMap: React.FC<MarineMapProps> = ({
 
     layerGroup.clearLayers();
     const region = REGIONS[activeRegion] || REGIONS.rameswaram;
+    const regionalZones = getPfzZonesForRegion(activeRegion);
 
-    // 1. Boat Marker (Vessel IND-TN-10)
+    // 1. Boat Marker (Vessel IND-TN-10) in Coastal Waters
     const boatIcon = L.divIcon({
       className: 'custom-boat-marker',
       html: `
@@ -90,14 +95,14 @@ export const MarineMap: React.FC<MarineMapProps> = ({
         <h4 style="font-weight:bold; color:#0284c7; margin:0 0 4px 0;">Vessel IND-TN-10-MM-4421</h4>
         <div style="font-size:12px; color:#cbd5e1;">Captain: K. Rameshan</div>
         <div style="font-size:11px; color:#10b981; margin-top:2px;">Status: Active / NavIC Satellite Locked</div>
-        <div style="font-size:11px; color:#94a3b8; font-family:monospace; margin-top:2px;">Coords: ${region.coords[0]}° N, ${region.coords[1]}° E</div>
+        <div style="font-size:11px; color:#94a3b8; font-family:monospace; margin-top:2px;">Coords: ${region.coords[0]}° N, ${region.coords[1]}° E (Inshore Waters)</div>
       </div>
     `);
     layerGroup.addLayer(boatMarker);
 
-    // 2. PFZ Zones
+    // 2. PFZ Zones for Active Region
     if (activeLayers.pfz) {
-      PFZ_ZONES.forEach((zone) => {
+      regionalZones.forEach((zone) => {
         const color =
           zone.status === 'optimal'
             ? '#10b981'
@@ -145,53 +150,59 @@ export const MarineMap: React.FC<MarineMapProps> = ({
       });
     }
 
-    // 3. Recommended Route to Zone B
-    const targetZone = PFZ_ZONES[0];
-    const routeCoords: [number, number][] = [
-      region.coords,
-      [(region.coords[0] + targetZone.lat) / 2 - 0.02, (region.coords[1] + targetZone.lng) / 2 + 0.03],
-      [targetZone.lat, targetZone.lng],
-    ];
+    // 3. Recommended Safe Marine Route (Via Sea Only - Zero Land Incursion)
+    if (activeLayers.route) {
+      const targetZone =
+        selectedZone && regionalZones.some((z) => z.id === selectedZone.id)
+          ? selectedZone
+          : regionalZones.find((z) => z.status === 'optimal') ||
+            regionalZones[0];
 
-    const routeLine = L.polyline(routeCoords, {
-      color: '#06b6d4',
-      weight: 3,
-      dashArray: '8, 8',
-      opacity: 0.9,
-    }).bindPopup(`
-      <div style="font-size:12px; font-family:sans-serif;">
-        <strong style="color:#06b6d4;">Recommended Navigation Route</strong>
-        <div style="color:#cbd5e1; margin-top:2px;">Safe path to Zone B bypassing shallow reefs & IMBL border.</div>
-      </div>
-    `);
-    layerGroup.addLayer(routeLine);
+      const safeRoute = getSafeSeaRoute(activeRegion, targetZone?.id);
 
-    // 4. IMBL Geofence Border Line (India - Sri Lanka International Maritime Boundary)
-    if (activeLayers.geofence) {
-      const imblCoords: [number, number][] = [
-        [10.05, 79.88],
-        [9.75, 79.75],
-        [9.35, 79.62],
-        [9.1, 79.52],
-        [8.7, 79.35],
-      ];
-
-      const imblLine = L.polyline(imblCoords, {
-        color: '#ef4444',
-        weight: 3,
-        dashArray: '6, 6',
-        opacity: 0.85,
+      const routeLine = L.polyline(safeRoute.pathCoordinates, {
+        color: '#06b6d4',
+        weight: 3.5,
+        dashArray: '8, 6',
+        opacity: 0.95,
       }).bindPopup(`
-        <div style="font-family:sans-serif;">
+        <div style="font-size:12px; font-family:sans-serif; padding:4px;">
+          <strong style="color:#06b6d4; font-size:13px;">Recommended Safe Marine Route (Sea Only)</strong>
+          <div style="color:#e2e8f0; margin-top:3px;">
+            Target: <strong>${targetZone.name}</strong> (${safeRoute.heading})
+          </div>
+          <div style="color:#94a3b8; font-size:11px; margin-top:2px;">
+            Distance: <strong>${safeRoute.distanceNM} NM</strong> | Est. Transit: <strong>${Math.floor(safeRoute.durationMinutes / 60)}h ${safeRoute.durationMinutes % 60}m</strong>
+          </div>
+          <div style="color:#10b981; font-weight:bold; font-size:11px; margin-top:4px; display:flex; align-items:center; gap:4px;">
+            <span>✓ 100% Sea Corridor • Zero Land Incursion</span>
+          </div>
+        </div>
+      `);
+      layerGroup.addLayer(routeLine);
+    }
+
+    // 4. IMBL Geofence Border Line (Officially Sourced UNCLOS 1974 & 1976 Treaties)
+    if (activeLayers.geofence) {
+      const imblLine = L.polyline(IMBL_LEAFLET_COORDS, {
+        color: '#ef4444',
+        weight: 3.5,
+        dashArray: '8, 8',
+        opacity: 0.9,
+      }).bindPopup(`
+        <div style="font-family:sans-serif; padding:4px;">
           <strong style="color:#ef4444;">🚨 RESTRICTED: IMBL International Boundary</strong>
           <div style="font-size:11px; color:#f87171; margin-top:2px;">
+            India - Sri Lanka Bilateral Treaty Line (1974 & 1976 Agreements)
+          </div>
+          <div style="font-size:10px; color:#cbd5e1; margin-top:2px;">
             Crossing is strictly prohibited. Vessel NavIC Geofence Alert active.
           </div>
         </div>
       `);
       layerGroup.addLayer(imblLine);
     }
-  }, [activeRegion, activeLayers, onSelectZone]);
+  }, [activeRegion, activeLayers, selectedZone, onSelectZone]);
 
   return (
     <div

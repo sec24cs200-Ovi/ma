@@ -38,9 +38,9 @@ router.post('/sos', (req, res) => {
     ackCode: '200_OK_DELIVERED',
     dispatches: [
       { target: `Given Number (${phone})`, channel: 'Direct In-App Satellite & SMS', status: 'ACK RECEIVED' },
-      { target: 'Father: M. Karuppan (+91 98401 23456)', channel: 'SMS + Relay', status: 'ACK RECEIVED' },
-      { target: 'Mother: K. Lakshmi (+91 98402 34567)', channel: 'SMS + Relay', status: 'ACK RECEIVED' },
-      { target: 'Spouse: R. Selvi (+91 94432 78901)', channel: 'Live WhatsApp + SMS', status: 'DELIVERED' },
+      { target: 'Father: M. Karuppan (+91 88384 83316)', channel: 'SMS + Relay', status: 'ACK RECEIVED' },
+      { target: 'Mother: K. Lakshmi (+91 63817 50922)', channel: 'SMS + Relay', status: 'ACK RECEIVED' },
+      { target: 'Spouse: R. Selvi (+91 98401 88601)', channel: 'Live WhatsApp + SMS', status: 'DELIVERED' },
       { target: 'Indian Coast Guard MRCC (1554)', channel: 'NavIC Satellite Distress Transponder', status: 'ALERT LOGGED' },
       { target: 'Coastal Marine Police (Rameswaram)', channel: 'VHF Emergency Relay Channel 16', status: 'BEACON PULSING' }
     ]

@@ -3,6 +3,7 @@ import {
   LayoutDashboard,
   Bot,
   Map as MapIcon,
+  Compass,
   Fish,
   ShieldAlert,
   Satellite,
@@ -60,28 +61,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       badge: { text: '94% YIELD', color: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
     },
     {
-      id: 'sea-safety',
-      label: t.nav_safety,
-      icon: <ShieldAlert className="w-4 h-4 text-emerald-400" />,
-      badge: { text: 'SAFE', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
-    },
-    {
-      id: 'satellite-telemetry',
-      label: t.nav_telemetry,
-      icon: <Satellite className="w-4 h-4 text-cyan-400" />,
-      badge: { text: 'ISRO', color: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' },
-    },
-    {
       id: 'equipment',
       label: t.nav_equipment,
       icon: <Cpu className="w-4 h-4 text-teal-400" />,
       badge: { text: 'MCU LIVE', color: 'bg-teal-500/20 text-teal-300 border-teal-500/30' },
-    },
-    {
-      id: 'route-planner',
-      label: t.nav_route,
-      icon: <Route className="w-4 h-4 text-blue-400" />,
-      badge: { text: '158° SSE', color: 'bg-blue-500/20 text-blue-300 border-blue-500/30' },
     },
     {
       id: 'alerts',
@@ -92,8 +75,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       id: 'marine-data',
       label: t.nav_data,
-      icon: <Database className="w-4 h-4 text-indigo-400" />,
-      badge: { text: 'INCOIS', color: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
+      icon: <Database className="w-4 h-4 text-cyan-400" />,
+      badge: { text: 'ALL-IN-1', color: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' },
     },
     {
       id: 'services',
@@ -110,7 +93,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <aside className="w-64 shrink-0 bg-[#060c16]/95 border-r border-sky-950/60 flex flex-col justify-between py-4 select-none">
+    <aside className="hidden md:flex w-64 shrink-0 bg-[#060c16]/95 border-r border-sky-950/60 flex-col justify-between py-4 select-none">
       <div className="flex flex-col gap-1 px-3">
         <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-500 flex items-center justify-between">
           <span>Sections & Features</span>

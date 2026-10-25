@@ -5,10 +5,11 @@ import { PFZZone } from '../../types';
 
 interface GisMapViewProps {
   activeRegion: string;
+  selectedZone?: PFZZone | null;
   onSelectZone: (zone: PFZZone) => void;
 }
 
-export const GisMapView: React.FC<GisMapViewProps> = ({ activeRegion, onSelectZone }) => {
+export const GisMapView: React.FC<GisMapViewProps> = ({ activeRegion, selectedZone, onSelectZone }) => {
   return (
     <div className="flex flex-col gap-4 p-4 lg:p-6 max-w-7xl mx-auto h-[calc(100vh-80px)]">
       <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 flex items-center justify-between shrink-0">
@@ -31,7 +32,7 @@ export const GisMapView: React.FC<GisMapViewProps> = ({ activeRegion, onSelectZo
       </div>
 
       <div className="flex-1 w-full rounded-2xl overflow-hidden border border-slate-800">
-        <MarineMap activeRegion={activeRegion} onSelectZone={onSelectZone} fullScreen={true} />
+        <MarineMap activeRegion={activeRegion} selectedZone={selectedZone} onSelectZone={onSelectZone} fullScreen={true} />
       </div>
     </div>
   );

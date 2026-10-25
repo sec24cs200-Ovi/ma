@@ -35,9 +35,9 @@ const SEED_DATA = {
     lastPing: new Date().toISOString(),
     contacts: [
       { role: 'Given Emergency Mobile', name: 'Emergency Contact', phone: '+91 81225 66828', channel: 'Direct In-App Satellite & SMS', status: 'SYNCED' },
-      { role: 'Father', name: 'M. Karuppan', phone: '+91 98401 23456', channel: 'SMS + Relay', status: 'SYNCED' },
-      { role: 'Mother', name: 'K. Lakshmi', phone: '+91 98402 34567', channel: 'SMS + Relay', status: 'SYNCED' },
-      { role: 'Spouse', name: 'R. Selvi', phone: '+91 94432 78901', channel: 'WhatsApp + SMS', status: 'SYNCED' }
+      { role: 'Father', name: 'M. Karuppan', phone: '+91 88384 83316', channel: 'SMS + Relay', status: 'SYNCED' },
+      { role: 'Mother', name: 'K. Lakshmi', phone: '+91 63817 50922', channel: 'SMS + Relay', status: 'SYNCED' },
+      { role: 'Spouse', name: 'R. Selvi', phone: '+91 98401 88601', channel: 'WhatsApp + SMS', status: 'SYNCED' }
     ],
     logs: [
       { time: '14:00 PM', coords: '09.2876° N, 79.3129° E', note: 'Delivered to Parents & Spouse (SMS/WhatsApp)' },
@@ -80,6 +80,29 @@ const SEED_DATA = {
       recommendation: 'SAFE TO SAIL (Optimal Fishing Window: 04:00 AM - 11:30 AM)',
       confidence: '96%',
       region: 'rameswaram'
+    }
+  ],
+  simulation_alerts: [
+    {
+      id: 'SIM-ALERT-INIT-01',
+      timestamp: new Date(Date.now() - 1800000).toISOString(),
+      displayTime: '13:30:00 PM',
+      vesselId: 'IND-TN-10-MM-4421',
+      captain: 'K. Rameshan',
+      lat: 9.2450,
+      lng: 79.4920,
+      coords: '09.2450° N, 79.4920° E',
+      distanceToImblKm: 4.2,
+      distanceToImblNM: 2.27,
+      riskStatus: 'EARLY_WARNING',
+      heading: '110° ESE',
+      speedKnots: 8.5,
+      note: 'Simulated trial: Vessel entered 5.0 km early safety buffer zone.',
+      acknowledged: true,
+      acknowledgedBy: 'Inspector S. Vignesh (Duty Officer)',
+      acknowledgedAt: new Date(Date.now() - 1700000).toISOString(),
+      responseAction: 'Course correction advisory issued via VHF Ch 16',
+      isMockSimulation: true
     }
   ]
 };

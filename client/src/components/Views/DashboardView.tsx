@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Waves,
   ShieldCheck,
@@ -11,9 +11,11 @@ import {
   ChevronRight,
   TrendingUp,
   Cpu,
+  RotateCcw,
 } from 'lucide-react';
 import { MarineMap } from '../Map/MarineMap';
-import { REGIONS, PFZ_ZONES } from '../../data/mockData';
+import { BoatSimulationView } from './BoatSimulationView';
+import { REGIONS, getPfzZonesForRegion } from '../../data/mockData';
 import { NavView, PFZZone } from '../../types';
 
 interface DashboardViewProps {
@@ -22,6 +24,8 @@ interface DashboardViewProps {
   onSelectZone: (zone: PFZZone) => void;
   onOpenScheduler: () => void;
   onOpenAuction: () => void;
+  onShowToast?: (title: string, message: string, type?: 'info' | 'success' | 'error') => void;
+  initialSimulationMode?: boolean;
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
@@ -30,56 +34,146 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onSelectZone,
   onOpenScheduler,
   onOpenAuction,
+  onShowToast,
+  initialSimulationMode = false,
 }) => {
+  const [isSimulationMode, setIsSimulationMode] = useState<boolean>(initialSimulationMode);
   const region = REGIONS[activeRegion] || REGIONS.rameswaram;
+  const regionalPfzZones = getPfzZonesForRegion(activeRegion);
 
   return (
-    <div className="flex flex-col gap-5 p-4 lg:p-6 max-w-7xl mx-auto">
-      {/* Top Banner Alert / Assistant Prompt Shortcut */}
-      <div className="p-4 rounded-2xl bg-gradient-to-r from-sky-950/80 via-cyan-950/60 to-slate-900 border border-cyan-500/30 flex flex-wrap items-center justify-between gap-4 shadow-xl">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center shrink-0">
-            <Sparkles className="w-5 h-5 text-cyan-300" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-bold text-white">ORCA Marine Intelligence Advisory</h2>
-              <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-bold">
-                HIGH PELAGIC YIELD
-              </span>
+    <div className="flex flex-col gap-4 p-3 sm:p-4 lg:p-6 max-w-7xl mx-auto">
+      {/* High-End Minimal Intelligence & Safety Command Strip */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+        {/* Card 1: Marine Intelligence Advisory */}
+        <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-cyan-950/20 border border-slate-800/90 hover:border-cyan-500/30 p-3.5 backdrop-blur-xl transition-all duration-300 shadow-lg flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-center shrink-0 text-cyan-400 group-hover:scale-105 transition-transform shadow-inner">
+              <Sparkles className="w-5 h-5" />
             </div>
-            <p className="text-xs text-slate-300 mt-0.5">
-              OceanSat-3 detects strong thermal front convergence at <strong>Zone B (12.4 NM SSE)</strong>. High Chlorophyll bloom (3.1 mg/m³). Safe sea conditions until 11:30 AM.
-            </p>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs font-bold text-white tracking-wide">Marine Intelligence Advisory</span>
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Optimal Pelagic Yield
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 truncate mt-0.5 font-medium">
+                Thermal front convergence & favorable catch zone active
+              </p>
+            </div>
           </div>
-        </div>
 
-        <div className="flex items-center gap-2">
           <button
             onClick={() => onNavigate('ai-assistant')}
-            className="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition-all shadow-md flex items-center gap-1.5"
+            className="shrink-0 px-3.5 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-white border border-cyan-500/30 text-xs font-bold transition-all flex items-center gap-1 shadow-sm active:scale-95"
           >
-            Ask AI Assistant
+            <span>Ask AI</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
+        {/* Card 2: Interactive Vessel Simulation & Safety */}
+        <div
+          className={`group relative overflow-hidden rounded-2xl border p-3.5 backdrop-blur-xl transition-all duration-300 shadow-lg flex items-center justify-between gap-3 ${
+            isSimulationMode
+              ? 'bg-gradient-to-br from-cyan-950/40 via-slate-900/80 to-[#071324] border-cyan-500/40 ring-1 ring-cyan-500/20'
+              : 'bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-blue-950/20 border-slate-800/90 hover:border-cyan-500/30'
+          }`}
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            <div
+              className={`w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 transition-transform group-hover:scale-105 shadow-inner ${
+                isSimulationMode
+                  ? 'bg-cyan-500/20 border-cyan-400/50 text-cyan-300'
+                  : 'bg-blue-500/10 border-blue-500/25 text-blue-400'
+              }`}
+            >
+              <Compass className="w-5 h-5" />
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs font-bold text-white tracking-wide">Vessel Simulation & Geofence</span>
+                <span
+                  className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                    isSimulationMode
+                      ? 'text-cyan-300 bg-cyan-500/15 border-cyan-500/40'
+                      : 'text-amber-400 bg-amber-500/10 border-amber-500/30'
+                  }`}
+                >
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      isSimulationMode ? 'bg-cyan-400 animate-ping' : 'bg-amber-400'
+                    }`}
+                  />
+                  {isSimulationMode ? 'Simulation Active' : 'Boundary Alert'}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 truncate mt-0.5 font-medium">
+                Real-time IMBL boundary navigation & safety alerts
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => {
+              const nextMode = !isSimulationMode;
+              setIsSimulationMode(nextMode);
+              if (onShowToast) {
+                onShowToast(
+                  nextMode ? 'Simulation Active' : 'Live Map Active',
+                  nextMode
+                    ? 'Interactive boat simulation & geofencing enabled.'
+                    : 'Standard GIS map view restored.',
+                  'info'
+                );
+              }
+            }}
+            className={`shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm active:scale-95 ${
+              isSimulationMode
+                ? 'bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/40'
+                : 'bg-gradient-to-r from-cyan-600 to-sky-600 hover:from-cyan-500 hover:to-sky-500 text-white shadow-cyan-900/30'
+            }`}
+          >
+            <span>{isSimulationMode ? 'Exit Mode' : 'Simulate'}</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
 
-      {/* Main Marine Intelligence Map */}
-      <div className="flex flex-col gap-2">
+      {/* Main Marine Intelligence Map or Embedded Simulation */}
+      <div className="flex flex-col gap-2.5">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-extrabold text-white flex items-center gap-2">
+          <h2 className="text-sm font-extrabold text-white flex items-center gap-2 tracking-wide">
             <Waves className="w-4 h-4 text-cyan-400" />
-            Live GIS Marine Intelligence Map
+            {isSimulationMode
+              ? 'Interactive Vessel Simulation & Geofence Intelligence'
+              : 'Live GIS Marine Intelligence Map'}
           </h2>
-          <button
-            onClick={() => onNavigate('gis-map')}
-            className="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1"
-          >
-            Open Fullscreen Map <ChevronRight className="w-3 h-3" />
-          </button>
+          <div className="flex items-center gap-2">
+            {!isSimulationMode && (
+              <button
+                onClick={() => onNavigate('gis-map')}
+                className="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 px-2.5 py-1 rounded-lg hover:bg-slate-800/60 transition-colors"
+              >
+                Fullscreen Map <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
         </div>
-        <MarineMap activeRegion={activeRegion} onSelectZone={onSelectZone} />
+
+        {isSimulationMode ? (
+          <div className="rounded-2xl border border-cyan-500/40 bg-[#060c18] overflow-hidden shadow-2xl">
+            <BoatSimulationView
+              onShowToast={onShowToast || (() => {})}
+              onExitSimulation={() => setIsSimulationMode(false)}
+              isEmbedded={true}
+            />
+          </div>
+        ) : (
+          <MarineMap activeRegion={activeRegion} onSelectZone={onSelectZone} />
+        )}
       </div>
 
       {/* Quick Action Cards Bar */}
@@ -206,7 +300,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div>
                 <div className="text-xs font-black text-emerald-300 uppercase">SAFE TO GO</div>
                 <p className="text-[10px] text-slate-300 mt-0.5">
-                  Suitable conditions tomorrow morning (04:00 AM – 11:30 AM). Swell is gentle at 0.8m.
+                  Optimal sea state • Calm waters and favorable weather conditions
                 </p>
               </div>
             </div>
@@ -254,7 +348,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             </div>
 
             <div className="flex flex-col gap-2">
-              {PFZ_ZONES.slice(0, 3).map((zone) => (
+              {regionalPfzZones.slice(0, 3).map((zone) => (
                 <div
                   key={zone.id}
                   onClick={() => onSelectZone(zone)}

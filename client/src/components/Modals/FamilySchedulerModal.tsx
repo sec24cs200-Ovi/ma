@@ -34,7 +34,7 @@ export const FamilySchedulerModal: React.FC<FamilySchedulerModalProps> = ({
   const handleManualTestPing = () => {
     onShowToast(
       'Manual Test Ping Dispatched',
-      `Location ${lat}° N, ${lng}° E sent to Parents (Father: +91 98401 23456) & Spouse via SMS/WhatsApp.`,
+      `Location ${lat}° N, ${lng}° E sent to Parents (Father: +91 88384 83316) & Spouse via SMS/WhatsApp.`,
       'info'
     );
   };
@@ -108,15 +108,15 @@ export const FamilySchedulerModal: React.FC<FamilySchedulerModalProps> = ({
           <div className="flex flex-col gap-1.5 text-xs text-slate-300">
             <div className="flex justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
               <span>Father (M. Karuppan)</span>
-              <span className="font-mono text-cyan-400">+91 98401 23456</span>
+              <span className="font-mono text-cyan-400">+91 88384 83316</span>
             </div>
             <div className="flex justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
               <span>Mother (K. Lakshmi)</span>
-              <span className="font-mono text-cyan-400">+91 98402 34567</span>
+              <span className="font-mono text-cyan-400">+91 63817 50922</span>
             </div>
             <div className="flex justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
               <span>Spouse (R. Selvi)</span>
-              <span className="font-mono text-cyan-400">+91 94432 78901</span>
+              <span className="font-mono text-cyan-400">+91 98401 88601</span>
             </div>
           </div>
         </div>

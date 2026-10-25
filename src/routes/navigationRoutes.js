@@ -20,6 +20,24 @@ const GEOFENCE_DATA = {
     name: 'Arabian Sea Commercial Lane Buffer',
     status: 'CAUTION_SECTOR'
   },
+  kanyakumari: {
+    imbl: [[7.6000, 77.4000], [7.6500, 77.7000], [7.7000, 78.0000]],
+    bufferDistanceKm: 5.0,
+    name: 'International East-West Supertanker Shipping Corridor',
+    status: 'CAUTION_SECTOR'
+  },
+  chennai: {
+    imbl: [[13.0000, 80.5000], [13.2500, 80.5500], [13.5000, 80.6000]],
+    bufferDistanceKm: 4.5,
+    name: 'Chennai Port Deepwater Shipping Approach Lane',
+    status: 'CAUTION_SECTOR'
+  },
+  tuticorin: {
+    imbl: [[8.5000, 78.4500], [8.7500, 78.5000], [9.0000, 78.5500]],
+    bufferDistanceKm: 4.0,
+    name: 'Gulf of Mannar Biosphere Reserve & Transit Buffer',
+    status: 'CAUTION_SECTOR'
+  },
   veraval: {
     imbl: [[20.6000, 69.9000], [21.1000, 69.9000]],
     bufferDistanceKm: 6.0,
@@ -34,13 +52,31 @@ const GEOFENCE_DATA = {
   }
 };
 
+GEOFENCE_DATA.vizag = GEOFENCE_DATA.visakhapatnam;
+GEOFENCE_DATA.thoothukudi = GEOFENCE_DATA.tuticorin;
+GEOFENCE_DATA.kasimedu = GEOFENCE_DATA.chennai;
+
+function normalizeRegion(raw) {
+  if (!raw) return 'rameswaram';
+  const clean = String(raw).toLowerCase().trim().replace(/[^a-z]/g, '');
+  if (clean.includes('kanya')) return 'kanyakumari';
+  if (clean.includes('chennai') || clean.includes('kasimedu')) return 'chennai';
+  if (clean.includes('tuticorin') || clean.includes('thoothu')) return 'tuticorin';
+  if (clean.includes('kochi') || clean.includes('cochin')) return 'kochi';
+  if (clean.includes('vizag') || clean.includes('visakha')) return 'visakhapatnam';
+  if (clean.includes('veraval')) return 'veraval';
+  if (clean.includes('paradip') || clean.includes('paradeep')) return 'paradip';
+  if (clean.includes('rames')) return 'rameswaram';
+  return clean;
+}
+
 /**
  * GET /api/navigation/geofence
  * Returns regional IMBL geofence boundary coordinates
  */
 router.get('/geofence', (req, res) => {
-  const region = (req.query.region || 'rameswaram').toLowerCase();
-  const geofence = GEOFENCE_DATA[region] || GEOFENCE_DATA.rameswaram;
+  const norm = normalizeRegion(req.query.region);
+  const geofence = GEOFENCE_DATA[norm] || GEOFENCE_DATA[req.query.region] || GEOFENCE_DATA.rameswaram;
 
   res.json({
     success: true,

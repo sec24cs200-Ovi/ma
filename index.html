@@ -41,8 +41,11 @@
         <i class="fa-solid fa-location-dot"></i>
         <select id="coastal-region-select" onchange="changeRegion(this.value)">
           <option value="rameswaram" selected>Rameswaram, Tamil Nadu 📍</option>
-          <option value="visakhapatnam">Visakhapatnam, Andhra Pradesh 📍</option>
+          <option value="kanyakumari">Kanyakumari, Tamil Nadu 📍</option>
+          <option value="chennai">Chennai Kasimedu, Tamil Nadu 📍</option>
+          <option value="tuticorin">Thoothukudi, Tamil Nadu 📍</option>
           <option value="kochi">Kochi, Kerala 📍</option>
+          <option value="visakhapatnam">Visakhapatnam, Andhra Pradesh 📍</option>
           <option value="veraval">Veraval, Gujarat 📍</option>
           <option value="paradip">Paradip, Odisha 📍</option>
         </select>
@@ -877,32 +880,50 @@
 
                 <!-- Firmware Snippet Code Box -->
                 <div class="firmware-code-container" style="position:relative;">
-                  <pre id="firmware-code-box" class="firmware-code-box"><code>// Marine AI Smart Net Load Cell Firmware
+                  <pre id="firmware-code-box" class="firmware-code-box"><code>// Marine AI Smart Net Load Cell Firmware (Output: Grams)
 #include &lt;Arduino.h&gt;
 #include "HX711.h"
 
 #define LOADCELL_DOUT_PIN  4
 #define LOADCELL_SCK_PIN   5
+#define TANGLE_PIN         A0
 
 HX711 scale;
+float calibrationFactor = 2.28; // Calibrated for Grams (g)
+const float TANGLE_THRESHOLD_GRAMS = 500.0;
+bool isMeasurementActive = true;
 
 void setup() {
   Serial.begin(9600); // Smart Net Baud rate
   scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
-  scale.set_scale(2280.f);
-  scale.tare(); // Reset load scale to 0
+  scale.set_scale(calibrationFactor);
+  scale.tare(); // Zero the scale
+  Serial.println("[SYS] HX711 Online (Grams mode). Commands: STOP, RESUME, TARE");
 }
 
 void loop() {
-  if (scale.is_ready()) {
-    float loadKg = scale.get_units(5);
-    float tensionKn = (loadKg * 9.81) / 1000.0;
-    int stressPercent = (loadKg / 500.0) * 100;
+  if (Serial.available()) {
+    String cmd = Serial.readStringUntil('\n');
+    cmd.trim();
+    if (cmd.equalsIgnoreCase("STOP")) isMeasurementActive = false;
+    else if (cmd.equalsIgnoreCase("RESUME")) isMeasurementActive = true;
+    else if (cmd.equalsIgnoreCase("TARE")) scale.tare();
+  }
 
-    // Output: LOAD:val,TENSION:val,TANGLE:state,STRESS:val
-    Serial.print("LOAD:"); Serial.print(loadKg, 1);
-    Serial.print(",TENSION:"); Serial.print(tensionKn, 2);
-    Serial.print(",TANGLE:LOW,STRESS:"); Serial.println(stressPercent);
+  if (!isMeasurementActive) { delay(500); return; }
+
+  if (scale.is_ready()) {
+    float weightG = scale.get_units(5); // In grams
+    if (weightG < 0) weightG = 0;
+    bool isTangled = (weightG >= TANGLE_THRESHOLD_GRAMS);
+
+    if (isTangled) {
+      Serial.println("TANGLE DETECTED");
+      Serial.print("Weight: "); Serial.print(weightG, 1); Serial.println(" g");
+    } else {
+      Serial.println("SAFE");
+      Serial.print("Weight: "); Serial.print(weightG, 1); Serial.println(" g");
+    }
   }
   delay(1000);
 }</code></pre>
@@ -2055,7 +2076,7 @@ void loop() {
           <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(3,7,18,0.5); padding:0.5rem 0.75rem; border-radius:6px; font-size:0.8rem;">
             <div>
               <strong style="color:var(--text-main);">Father: M. Karuppan</strong>
-              <span style="color:var(--text-dim); margin-left:0.5rem;">+91 98401 23456</span>
+              <span style="color:var(--text-dim); margin-left:0.5rem;">+91 88384 83316</span>
             </div>
             <span class="card-badge badge-safe">SMS + RELAY</span>
           </div>
@@ -2063,7 +2084,7 @@ void loop() {
           <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(3,7,18,0.5); padding:0.5rem 0.75rem; border-radius:6px; font-size:0.8rem;">
             <div>
               <strong style="color:var(--text-main);">Mother: K. Lakshmi</strong>
-              <span style="color:var(--text-dim); margin-left:0.5rem;">+91 98402 34567</span>
+              <span style="color:var(--text-dim); margin-left:0.5rem;">+91 63817 50922</span>
             </div>
             <span class="card-badge badge-safe">SMS + RELAY</span>
           </div>
@@ -2071,7 +2092,7 @@ void loop() {
           <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(3,7,18,0.5); padding:0.5rem 0.75rem; border-radius:6px; font-size:0.8rem;">
             <div>
               <strong style="color:var(--text-main);">Spouse: R. Selvi</strong>
-              <span style="color:var(--text-dim); margin-left:0.5rem;">+91 94432 78901</span>
+              <span style="color:var(--text-dim); margin-left:0.5rem;">+91 98401 88601</span>
             </div>
             <span class="card-badge badge-safe">WHATSAPP + SMS</span>
           </div>
@@ -2156,15 +2177,15 @@ void loop() {
         </h5>
         <ul style="list-style: none; font-size: 0.78rem; display: flex; flex-direction: column; gap: 0.4rem;">
           <li style="color: #10b981; display:flex; align-items:center; justify-content:space-between;">
-            <span><i class="fa-solid fa-circle-check"></i> <strong>Father (M. Karuppan - +91 98401 23456):</strong> Emergency SMS & Location Sent</span>
+            <span><i class="fa-solid fa-circle-check"></i> <strong>Father (M. Karuppan - +91 88384 83316):</strong> Emergency SMS & Location Sent</span>
             <span class="card-badge badge-safe">ACK RECEIVED</span>
           </li>
           <li style="color: #10b981; display:flex; align-items:center; justify-content:space-between;">
-            <span><i class="fa-solid fa-circle-check"></i> <strong>Mother (K. Lakshmi - +91 98402 34567):</strong> Emergency SMS & Location Sent</span>
+            <span><i class="fa-solid fa-circle-check"></i> <strong>Mother (K. Lakshmi - +91 63817 50922):</strong> Emergency SMS & Location Sent</span>
             <span class="card-badge badge-safe">ACK RECEIVED</span>
           </li>
           <li style="color: #10b981; display:flex; align-items:center; justify-content:space-between;">
-            <span><i class="fa-solid fa-circle-check"></i> <strong>Spouse (R. Selvi - +91 94432 78901):</strong> Live WhatsApp Distress Link Sent</span>
+            <span><i class="fa-solid fa-circle-check"></i> <strong>Spouse (R. Selvi - +91 98401 88601):</strong> Live WhatsApp Distress Link Sent</span>
             <span class="card-badge badge-safe">DELIVERED</span>
           </li>
           <li style="color: #38bdf8; display:flex; align-items:center; justify-content:space-between;">
@@ -2188,8 +2209,8 @@ void loop() {
       </div>
 
       <div style="display: flex; gap: 0.6rem;">
-        <button class="layer-btn" style="flex:1; border-color:var(--border-color); padding: 0.6rem;" onclick="alert('Calling primary family emergency contact: Father M. Karuppan (+91 98401 23456)...')">
-          <i class="fa-solid fa-phone"></i> Call Father (+91 98401 23456)
+        <button class="layer-btn" style="flex:1; border-color:var(--border-color); padding: 0.6rem;" onclick="alert('Calling primary family emergency contact: Father M. Karuppan (+91 88384 83316)...')">
+          <i class="fa-solid fa-phone"></i> Call Father (+91 88384 83316)
         </button>
         <button class="layer-btn" style="padding: 0.6rem 1rem;" onclick="toggleModal('sos-rescue-modal', false)">
           Cancel SOS Alert

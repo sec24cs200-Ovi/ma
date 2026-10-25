@@ -29,14 +29,58 @@ const REGION_DATA = {
     imbl: [[9.0000, 79.5500], [9.2500, 79.6000], [9.5000, 79.7000]],
     route: [[9.2876, 79.3129], [9.2200, 79.3600], [9.1500, 79.4200]]
   },
+  kanyakumari: {
+    name: 'Kanyakumari, Tamil Nadu',
+    coords: [8.0780, 77.5520],
+    zoom: 11,
+    weather: '27.8°C | Moderate Swell | Wind 15 km/h SW',
+    zones: [
+      { name: 'Zone B – Wadge Bank Ridge', coords: [7.8500, 77.6200], status: 'High Potential', score: '95%', sst: '27.8°C', chl: '3.8 mg/m³', color: '#10b981' },
+      { name: 'Zone A – Cape Comorin Confluence', coords: [8.0100, 77.7200], status: 'High Potential', score: '91%', sst: '28.1°C', chl: '3.2 mg/m³', color: '#10b981' },
+      { name: 'Zone C – Manakudy Estuarine Plume', coords: [7.9800, 77.4600], status: 'Moderate', score: '78%', sst: '28.4°C', chl: '2.7 mg/m³', color: '#f59e0b' },
+      { name: 'Zone D – Shipping Lane Buffer (Restricted)', coords: [7.7200, 77.5800], status: 'Unsafe', score: '30%', sst: '28.9°C', chl: '1.2 mg/m³', color: '#ef4444' }
+    ],
+    imbl: [[7.6000, 77.4000], [7.6500, 77.7000], [7.7000, 78.0000]],
+    route: [[8.0780, 77.5520], [7.9600, 77.5850], [7.8500, 77.6200]]
+  },
+  chennai: {
+    name: 'Chennai Kasimedu, Tamil Nadu',
+    coords: [13.1250, 80.3050],
+    zoom: 11,
+    weather: '29.5°C | Calm Waters | Wind 10 km/h E',
+    zones: [
+      { name: 'Zone B – Kasimedu Deepwater Canyon', coords: [13.1500, 80.4800], status: 'High Potential', score: '93%', sst: '29.2°C', chl: '3.4 mg/m³', color: '#10b981' },
+      { name: 'Zone A – Pulicat Thermal Front', coords: [13.3800, 80.4200], status: 'High Potential', score: '90%', sst: '28.9°C', chl: '4.1 mg/m³', color: '#10b981' },
+      { name: 'Zone C – Ennore Outer Shelf', coords: [13.2600, 80.4100], status: 'Moderate', score: '77%', sst: '29.5°C', chl: '2.9 mg/m³', color: '#f59e0b' },
+      { name: 'Zone D – Port Fairway (Restricted)', coords: [13.0800, 80.3800], status: 'Restricted', score: '25%', sst: '29.8°C', chl: '1.5 mg/m³', color: '#ef4444' }
+    ],
+    imbl: [[13.0000, 80.5000], [13.2500, 80.5500], [13.5000, 80.6000]],
+    route: [[13.1250, 80.3050], [13.1350, 80.3900], [13.1500, 80.4800]]
+  },
+  tuticorin: {
+    name: 'Thoothukudi, Tamil Nadu',
+    coords: [8.7850, 78.1750],
+    zoom: 11,
+    weather: '28.9°C | Fair Waters | Wind 14 km/h SE',
+    zones: [
+      { name: 'Zone B – Pearl Bank Shelf', coords: [8.7200, 78.3600], status: 'High Potential', score: '94%', sst: '28.7°C', chl: '3.6 mg/m³', color: '#10b981' },
+      { name: 'Zone A – Vembar Thermal Front', coords: [8.9500, 78.3500], status: 'High Potential', score: '89%', sst: '28.4°C', chl: '3.9 mg/m³', color: '#10b981' },
+      { name: 'Zone C – Punnakayal Estuary Plume', coords: [8.6200, 78.2600], status: 'Moderate', score: '76%', sst: '29.0°C', chl: '2.8 mg/m³', color: '#f59e0b' },
+      { name: 'Zone D – Coral Reserve (Restricted)', coords: [8.8500, 78.2200], status: 'Restricted', score: '12%', sst: '28.9°C', chl: '1.8 mg/m³', color: '#ef4444' }
+    ],
+    imbl: [[8.5000, 78.4500], [8.7500, 78.5000], [9.0000, 78.5500]],
+    route: [[8.7850, 78.1750], [8.7500, 78.2600], [8.7200, 78.3600]]
+  },
   visakhapatnam: {
     name: 'Visakhapatnam, Andhra Pradesh',
     coords: [17.6868, 83.2185],
     zoom: 11,
     weather: '29.1°C | Calm Sea | Wind 9 km/h E',
     zones: [
-      { name: 'Vizag Deepsea Zone 1', coords: [17.5500, 83.3800], status: 'High Potential', score: '92%', sst: '28.9°C', chl: '3.6 mg/m³', color: '#10b981' },
-      { name: 'Gangavaram Outer', coords: [17.4800, 83.4200], status: 'Moderate', score: '79%', sst: '28.4°C', chl: '2.1 mg/m³', color: '#f59e0b' }
+      { name: 'Zone B – Vizag Deepsea Shelf', coords: [17.5500, 83.3800], status: 'High Potential', score: '92%', sst: '28.9°C', chl: '3.6 mg/m³', color: '#10b981' },
+      { name: 'Zone A – Dolphin\'s Nose Thermal Front', coords: [17.6200, 83.4500], status: 'High Potential', score: '90%', sst: '28.6°C', chl: '3.9 mg/m³', color: '#10b981' },
+      { name: 'Zone C – Gangavaram Continental Shelf', coords: [17.4800, 83.4200], status: 'Moderate', score: '79%', sst: '28.4°C', chl: '2.1 mg/m³', color: '#f59e0b' },
+      { name: 'Zone D – Naval Perimeter (Restricted)', coords: [17.6500, 83.3500], status: 'Restricted', score: '25%', sst: '29.1°C', chl: '1.4 mg/m³', color: '#ef4444' }
     ],
     imbl: [[17.3000, 83.6000], [17.8000, 83.7000]],
     route: [[17.6868, 83.2185], [17.6200, 83.2800], [17.5500, 83.3800]]
@@ -47,8 +91,10 @@ const REGION_DATA = {
     zoom: 11,
     weather: '27.8°C | Slight Swell | Wind 14 km/h WNW',
     zones: [
-      { name: 'Malabar Shelf Zone 3', coords: [9.8500, 76.0500], status: 'High Potential', score: '95%', sst: '27.9°C', chl: '4.2 mg/m³', color: '#10b981' },
-      { name: 'Kochi Offshore South', coords: [9.7200, 76.1000], status: 'Moderate', score: '81%', sst: '27.6°C', chl: '2.4 mg/m³', color: '#f59e0b' }
+      { name: 'Zone B – Malabar Shelf Ridge', coords: [9.8500, 76.0500], status: 'High Potential', score: '95%', sst: '27.9°C', chl: '4.2 mg/m³', color: '#10b981' },
+      { name: 'Zone A – Alleppey Upwelling Zone', coords: [9.6500, 76.1000], status: 'High Potential', score: '92%', sst: '27.4°C', chl: '4.6 mg/m³', color: '#10b981' },
+      { name: 'Zone C – Chellanam Coastal Trench', coords: [9.8000, 76.1600], status: 'Moderate', score: '78%', sst: '28.2°C', chl: '3.1 mg/m³', color: '#f59e0b' },
+      { name: 'Zone D – Port Fairway Channel (Restricted)', coords: [9.9700, 76.1400], status: 'Restricted', score: '20%', sst: '28.6°C', chl: '1.9 mg/m³', color: '#ef4444' }
     ],
     imbl: [[9.6000, 75.8000], [10.1000, 75.8500]],
     route: [[9.9312, 76.2673], [9.8900, 76.1500], [9.8500, 76.0500]]
@@ -59,7 +105,8 @@ const REGION_DATA = {
     zoom: 11,
     weather: '28.5°C | Moderate Sea | Wind 16 km/h W',
     zones: [
-      { name: 'Saurashtra Bank A', coords: [20.7800, 70.2500], status: 'High Potential', score: '91%', sst: '28.2°C', chl: '3.5 mg/m³', color: '#10b981' }
+      { name: 'Zone B – Saurashtra Bank A', coords: [20.7800, 70.2500], status: 'High Potential', score: '91%', sst: '28.2°C', chl: '3.5 mg/m³', color: '#10b981' },
+      { name: 'Zone A – Somnath Coastal Shelf', coords: [20.8200, 70.4800], status: 'High Potential', score: '88%', sst: '28.5°C', chl: '3.2 mg/m³', color: '#10b981' }
     ],
     imbl: [[20.6000, 69.9000], [21.1000, 69.9000]],
     route: [[20.9042, 70.3670], [20.8400, 70.3000], [20.7800, 70.2500]]
@@ -70,7 +117,8 @@ const REGION_DATA = {
     zoom: 11,
     weather: '29.4°C | Fair Sea | Wind 11 km/h SE',
     zones: [
-      { name: 'Mahanadi Plume Zone', coords: [20.2000, 86.7500], status: 'High Potential', score: '95%', sst: '29.0°C', chl: '4.5 mg/m³', color: '#10b981' }
+      { name: 'Zone B – Mahanadi Plume Zone', coords: [20.2000, 86.7500], status: 'High Potential', score: '95%', sst: '29.0°C', chl: '4.5 mg/m³', color: '#10b981' },
+      { name: 'Zone A – Wheeler Island Outer Shelf', coords: [20.4500, 86.8200], status: 'High Potential', score: '89%', sst: '28.7°C', chl: '3.8 mg/m³', color: '#10b981' }
     ],
     imbl: [[20.1000, 87.0000], [20.5000, 87.0000]],
     route: [[20.3164, 86.6114], [20.2600, 86.6800], [20.2000, 86.7500]]
@@ -1468,7 +1516,7 @@ function triggerSOSRescue() {
   // High priority distress toast notification
   showToastNotification(
     '🚨 EMERGENCY DISTRESS BROADCAST ACTIVATED!',
-    `Vessel IND-TN-10 live coordinates (${lat}° N, ${lon}° E) automatically transmitted via Satellite SMS & WhatsApp to Parents (Father: +91 98401 23456, Mother: +91 98402 34567), Spouse (+91 94432 78901), and Coast Guard MRCC 1554!`,
+    `Vessel IND-TN-10 live coordinates (${lat}° N, ${lon}° E) automatically transmitted via Satellite SMS & WhatsApp to Parents (Father: +91 88384 83316, Mother: +91 63817 50922), Spouse (+91 98401 88601), and Coast Guard MRCC 1554!`,
     'error'
   );
 
@@ -1491,9 +1539,9 @@ let familyScheduler = {
   nextPingTime: Date.now() + 60 * 60 * 1000,
   timerInterval: null,
   contacts: [
-    { relation: 'Father', name: 'M. Karuppan', phone: '+91 98401 23456' },
-    { relation: 'Mother', name: 'K. Lakshmi', phone: '+91 98402 34567' },
-    { relation: 'Spouse', name: 'R. Selvi', phone: '+91 94432 78901' }
+    { relation: 'Father', name: 'M. Karuppan', phone: '+91 88384 83316' },
+    { relation: 'Mother', name: 'K. Lakshmi', phone: '+91 63817 50922' },
+    { relation: 'Spouse', name: 'R. Selvi', phone: '+91 98401 88601' }
   ],
   logs: [
     { time: '14:00 PM', coords: '09.2876° N, 79.3129° E', note: 'Delivered to Parents & Spouse (SMS/WhatsApp)' },
@@ -1622,7 +1670,7 @@ function dispatchFamilyLocationPing(isManual = false) {
 
   showToastNotification(
     isManual ? '📍 Manual Location Ping Dispatched!' : '📡 Automated Family Location Broadcast Sent!',
-    `Vessel IND-TN-10 coordinates (${lat}° N, ${lon}° E) and crew SAFE status transmitted to Parents (Father: +91 98401 23456, Mother: +91 98402 34567) & Spouse (+91 94432 78901).`,
+    `Vessel IND-TN-10 coordinates (${lat}° N, ${lon}° E) and crew SAFE status transmitted to Parents (Father: +91 88384 83316, Mother: +91 63817 50922) & Spouse (+91 98401 88601).`,
     'success'
   );
 }
@@ -1651,7 +1699,7 @@ function shareLocationWhatsApp(isEmergency = false) {
     text = `📍 *Marine AI Safe Sea Check-In* 🌊%0A%0A*Vessel:* IND-TN-10-MM-4421 (K. Rameshan)%0A*Current Status:* All crew safe & sailing normally.%0A*Location:* ${lat}° N, ${lon}° E (${regData.name})%0A*Speed:* 6.2 knots | Swell: 0.8m%0A*View on Google Maps:* https://maps.google.com/?q=${lat},${lon}%0A%0A_Sent via Marine AI Automated Family Scheduler._`;
   }
 
-  window.open(`https://api.whatsapp.com/send?phone=919840123456&text=${text}`, '_blank');
+  window.open(`https://api.whatsapp.com/send?phone=918838483316&text=${text}`, '_blank');
 
 function applyScheme(schemeName) {
   if (typeof showToastNotification === "function") {
@@ -1933,7 +1981,13 @@ function stopSerialSimulation() {
 
 function processIncomingSerialLine(line) {
   serialPktCount++;
-  logToSerialConsole("RX", line);
+
+  // Auto-convert any "X kg" to grams in the serial monitor log if applicable
+  const displayLine = line.replace(/([0-9.]+)\s*kg\b/gi, (match, val) => {
+    const num = parseFloat(val);
+    return !isNaN(num) ? `${Math.round(num * 1000)} g` : match;
+  });
+  logToSerialConsole("RX", displayLine);
 
   let dataObj = {};
   let rawLoad = null;
@@ -1976,6 +2030,20 @@ function processIncomingSerialLine(line) {
     if (dataObj[k] !== undefined) {
       const n = typeof dataObj[k] === 'number' ? dataObj[k] : parseFloat(String(dataObj[k]).replace(/[^0-9.-]/g, ''));
       if (!isNaN(n)) { rawLoad = n; break; }
+    }
+  }
+
+  // 3b. Weight regex match: "Weight: 0.80 kg" or "Weight: 800 g"
+  if (rawLoad === null) {
+    const weightMatch = line.match(/Weight:\s*([0-9.]+)\s*(kg|g)?/i);
+    if (weightMatch) {
+      const val = parseFloat(weightMatch[1]);
+      const unit = (weightMatch[2] || '').toLowerCase();
+      if (unit === 'g') {
+        rawLoad = val / 1000.0;
+      } else {
+        rawLoad = val;
+      }
     }
   }
 
@@ -2023,10 +2091,10 @@ function processIncomingSerialLine(line) {
     }
   }
 
-  // 8. Fallback: Detect tangle mentions anywhere in line (e.g. "SNAG DETECTED" or "TANGLE: LOW")
+  // 8. Fallback: Detect tangle mentions anywhere in line (e.g. "SNAG DETECTED" or "TANGLE DETECTED")
   if (rawTangle === null) {
     const upperLine = line.toUpperCase();
-    if (upperLine.includes('SNAG') || upperLine.includes('CRITICAL') || upperLine.includes('HIGH TANGLE')) {
+    if (upperLine.includes('SNAG') || upperLine.includes('CRITICAL') || upperLine.includes('HIGH TANGLE') || upperLine.includes('TANGLE DETECTED') || upperLine.includes('TANGLE')) {
       rawTangle = 'HIGH';
     } else if (upperLine.includes('MODERATE') || upperLine.includes('MEDIUM')) {
       rawTangle = 'MODERATE';

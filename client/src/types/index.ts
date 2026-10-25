@@ -1,5 +1,6 @@
 export type NavView =
   | 'dashboard'
+  | 'boat-simulation'
   | 'ai-assistant'
   | 'gis-map'
   | 'pfz-zones'
@@ -68,10 +69,12 @@ export interface GovtScheme {
 
 export interface McuTelemetry {
   loadKg: number;
+  loadG?: number;
   tensionKn: number;
   tangleRisk: 'LOW' | 'MODERATE' | 'HIGH';
   stressPercent: number;
   rawLine?: string;
+  isHalted?: boolean;
 }
 
 export interface ChatMessage {
@@ -84,4 +87,79 @@ export interface ChatMessage {
     depth?: string;
     recommendedZone?: string;
   };
+}
+
+export type SimulationRiskStatus =
+  | 'SAFE'
+  | 'EARLY_WARNING'
+  | 'CRITICAL_PROXIMITY'
+  | 'CRITICAL_BREACH';
+
+export interface IMBLPoint {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  desc?: string;
+}
+
+export interface SafetyStation {
+  id: string;
+  name: string;
+  officer: string;
+  phone: string;
+  displayPhone: string;
+  lat: number;
+  lng: number;
+  channel: string;
+  verified: boolean;
+  jurisdiction: string;
+  distanceKm?: number;
+  distanceNM?: number;
+}
+
+export interface BoatTelemetry {
+  lat: number;
+  lng: number;
+  coords: string;
+  speedKnots: number;
+  heading: number;
+  headingCompass: string;
+  distanceToImblKm: number;
+  distanceToImblNM: number;
+  distanceToWarningKm: number;
+  distanceToWarningNM: number;
+  riskStatus: SimulationRiskStatus;
+  isCrossedIMBL: boolean;
+  closestImblPoint: [number, number];
+  closestStation?: SafetyStation;
+}
+
+export interface GeofenceSettings {
+  warningDistanceKm: number;
+  criticalDistanceKm: number;
+  gpsAccuracyMarginMeters: number;
+}
+
+export interface SimulationAlert {
+  id: string;
+  timestamp: string;
+  displayTime: string;
+  vesselId: string;
+  captain: string;
+  lat: number;
+  lng: number;
+  coords: string;
+  distanceToImblKm: number;
+  distanceToImblNM: number;
+  riskStatus: SimulationRiskStatus | 'SAFE_RECOVERY';
+  heading: string;
+  speedKnots: number;
+  note?: string;
+  acknowledged: boolean;
+  acknowledgedBy?: string | null;
+  acknowledgedAt?: string | null;
+  responseAction?: string | null;
+  officerNotes?: string;
+  isMockSimulation: boolean;
 }

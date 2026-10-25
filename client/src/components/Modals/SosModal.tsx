@@ -12,6 +12,7 @@ import {
   X,
 } from 'lucide-react';
 import { REGIONS } from '../../data/mockData';
+import { triggerEmergencyCall } from '../../utils/callHelper';
 
 interface SosModalProps {
   isOpen: boolean;
@@ -69,7 +70,7 @@ export const SosModal: React.FC<SosModalProps> = ({
 
   const handleSendWhatsApp = () => {
     const text = `🚨 *EMERGENCY DISTRESS AT SEA* 🚨%0A%0A*Vessel:* IND-TN-10-MM-4421 (Capt. K. Rameshan)%0A*Live Location:* ${lat}° N, ${lng}° E (${region.name})%0A*Live Tracking Link:* ${mapsLink}%0A%0AImmediate rescue coordination requested with Coast Guard MRCC 1554.`;
-    window.open(`https://api.whatsapp.com/send?phone=919840123456&text=${text}`, '_blank');
+    window.open(`https://api.whatsapp.com/send?phone=918838483316&text=${text}`, '_blank');
   };
 
   return (
@@ -186,39 +187,50 @@ export const SosModal: React.FC<SosModalProps> = ({
 
           <div className="flex flex-col gap-1.5 text-xs text-slate-300">
             <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/80">
-              <span>Father: M. Karuppan (+91 98401 23456)</span>
+              <span>Father: M. Karuppan (+91 88384 83316)</span>
               <span className="text-emerald-400 font-semibold text-[11px]">✓ Coordinates SMS Sent</span>
             </div>
             <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/80">
-              <span>Mother: K. Lakshmi (+91 98402 34567)</span>
+              <span>Mother: K. Lakshmi (+91 63817 50922)</span>
               <span className="text-emerald-400 font-semibold text-[11px]">✓ Emergency Audio Call Alerted</span>
             </div>
             <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/80">
-              <span>Spouse: R. Selvi (+91 94432 78901)</span>
+              <span>Spouse: R. Selvi (+91 98401 88601)</span>
               <span className="text-emerald-400 font-semibold text-[11px]">✓ WhatsApp Location Delivered</span>
             </div>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-3 pt-2">
-          {!isInCall && (
-            <button
-              onClick={handleStartCall}
-              className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg shadow-red-900/40"
-            >
-              <PhoneCall className="w-4 h-4" />
-              Direct Satellite Radio to Coast Guard (1554)
-            </button>
-          )}
-
+        <div className="flex flex-col gap-2.5 pt-2">
+          {/* Direct Phone Call to 8122566828 */}
           <button
-            onClick={handleSendWhatsApp}
-            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-emerald-900/40"
+            onClick={() => triggerEmergencyCall('8122566828', 'SOS Modal Direct Call')}
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-black text-xs uppercase tracking-wider transition-all shadow-lg shadow-red-950/60 border border-red-400/40 active:scale-95"
           >
-            <Send className="w-4 h-4" />
-            Distress WhatsApp to Family Contacts
+            <PhoneCall className="w-4 h-4 animate-bounce" />
+            <span>📞 Call Emergency Duty Officer (8122566828)</span>
           </button>
+
+          <div className="flex flex-wrap items-center gap-2.5">
+            {!isInCall && (
+              <button
+                onClick={handleStartCall}
+                className="flex-1 min-w-[200px] flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-red-800/80 hover:bg-red-700 text-white font-extrabold text-xs uppercase tracking-wider transition-all"
+              >
+                <Radio className="w-4 h-4" />
+                Coast Guard Intercom (1554)
+              </button>
+            )}
+
+            <button
+              onClick={handleSendWhatsApp}
+              className="flex-1 min-w-[200px] flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-emerald-900/40"
+            >
+              <Send className="w-4 h-4" />
+              WhatsApp to Family Contacts
+            </button>
+          </div>
         </div>
       </div>
     </div>

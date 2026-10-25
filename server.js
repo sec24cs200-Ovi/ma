@@ -18,6 +18,7 @@ const pfzRoutes = require('./src/routes/pfzRoutes');
 const navigationRoutes = require('./src/routes/navigationRoutes');
 const emergencyRoutes = require('./src/routes/emergencyRoutes');
 const servicesRoutes = require('./src/routes/servicesRoutes');
+const simulationRoutes = require('./src/routes/simulationRoutes');
 
 const app = express();
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
@@ -47,6 +48,7 @@ app.use('/api/navigation', navigationRoutes);
 app.use('/api/emergency', emergencyRoutes);
 app.use('/api/schemes', servicesRoutes);
 app.use('/api/market', servicesRoutes);
+app.use('/api/simulation', simulationRoutes);
 
 // Health Check API
 app.get('/api/health', (req, res) => {

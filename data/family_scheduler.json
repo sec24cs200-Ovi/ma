@@ -12,21 +12,21 @@
     {
       "role": "Father",
       "name": "M. Karuppan",
-      "phone": "+91 98401 23456",
+      "phone": "+91 88384 83316",
       "channel": "SMS + Relay",
       "status": "SYNCED"
     },
     {
       "role": "Mother",
       "name": "K. Lakshmi",
-      "phone": "+91 98402 34567",
+      "phone": "+91 63817 50922",
       "channel": "SMS + Relay",
       "status": "SYNCED"
     },
     {
       "role": "Spouse",
       "name": "R. Selvi",
-      "phone": "+91 94432 78901",
+      "phone": "+91 98401 88601",
       "channel": "WhatsApp + SMS",
       "status": "SYNCED"
     }

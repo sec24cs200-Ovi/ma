@@ -1468,7 +1468,7 @@ function triggerSOSRescue() {
   // High priority distress toast notification
   showToastNotification(
     '🚨 EMERGENCY DISTRESS BROADCAST ACTIVATED!',
-    `Vessel IND-TN-10 live coordinates (${lat}° N, ${lon}° E) automatically transmitted via Satellite SMS & WhatsApp to Parents (Father: +91 98401 23456, Mother: +91 98402 34567), Spouse (+91 94432 78901), and Coast Guard MRCC 1554!`,
+    `Vessel IND-TN-10 live coordinates (${lat}° N, ${lon}° E) automatically transmitted via Satellite SMS & WhatsApp to Parents (Father: +91 88384 83316, Mother: +91 63817 50922), Spouse (+91 98401 88601), and Coast Guard MRCC 1554!`,
     'error'
   );
 
@@ -1491,9 +1491,9 @@ let familyScheduler = {
   nextPingTime: Date.now() + 60 * 60 * 1000,
   timerInterval: null,
   contacts: [
-    { relation: 'Father', name: 'M. Karuppan', phone: '+91 98401 23456' },
-    { relation: 'Mother', name: 'K. Lakshmi', phone: '+91 98402 34567' },
-    { relation: 'Spouse', name: 'R. Selvi', phone: '+91 94432 78901' }
+    { relation: 'Father', name: 'M. Karuppan', phone: '+91 88384 83316' },
+    { relation: 'Mother', name: 'K. Lakshmi', phone: '+91 63817 50922' },
+    { relation: 'Spouse', name: 'R. Selvi', phone: '+91 98401 88601' }
   ],
   logs: [
     { time: '14:00 PM', coords: '09.2876° N, 79.3129° E', note: 'Delivered to Parents & Spouse (SMS/WhatsApp)' },
@@ -1622,7 +1622,7 @@ function dispatchFamilyLocationPing(isManual = false) {
 
   showToastNotification(
     isManual ? '📍 Manual Location Ping Dispatched!' : '📡 Automated Family Location Broadcast Sent!',
-    `Vessel IND-TN-10 coordinates (${lat}° N, ${lon}° E) and crew SAFE status transmitted to Parents (Father: +91 98401 23456, Mother: +91 98402 34567) & Spouse (+91 94432 78901).`,
+    `Vessel IND-TN-10 coordinates (${lat}° N, ${lon}° E) and crew SAFE status transmitted to Parents (Father: +91 88384 83316, Mother: +91 63817 50922) & Spouse (+91 98401 88601).`,
     'success'
   );
 }
@@ -1651,7 +1651,7 @@ function shareLocationWhatsApp(isEmergency = false) {
     text = `📍 *Marine AI Safe Sea Check-In* 🌊%0A%0A*Vessel:* IND-TN-10-MM-4421 (K. Rameshan)%0A*Current Status:* All crew safe & sailing normally.%0A*Location:* ${lat}° N, ${lon}° E (${regData.name})%0A*Speed:* 6.2 knots | Swell: 0.8m%0A*View on Google Maps:* https://maps.google.com/?q=${lat},${lon}%0A%0A_Sent via Marine AI Automated Family Scheduler._`;
   }
 
-  window.open(`https://api.whatsapp.com/send?phone=919840123456&text=${text}`, '_blank');
+  window.open(`https://api.whatsapp.com/send?phone=918838483316&text=${text}`, '_blank');
 
 function applyScheme(schemeName) {
   if (typeof showToastNotification === "function") {
@@ -1933,7 +1933,13 @@ function stopSerialSimulation() {
 
 function processIncomingSerialLine(line) {
   serialPktCount++;
-  logToSerialConsole("RX", line);
+
+  // Auto-convert any "X kg" to grams in the serial monitor log if applicable
+  const displayLine = line.replace(/([0-9.]+)\s*kg\b/gi, (match, val) => {
+    const num = parseFloat(val);
+    return !isNaN(num) ? `${Math.round(num * 1000)} g` : match;
+  });
+  logToSerialConsole("RX", displayLine);
 
   let dataObj = {};
   let rawLoad = null;
@@ -1976,6 +1982,20 @@ function processIncomingSerialLine(line) {
     if (dataObj[k] !== undefined) {
       const n = typeof dataObj[k] === 'number' ? dataObj[k] : parseFloat(String(dataObj[k]).replace(/[^0-9.-]/g, ''));
       if (!isNaN(n)) { rawLoad = n; break; }
+    }
+  }
+
+  // 3b. Weight regex match: "Weight: 0.80 kg" or "Weight: 800 g"
+  if (rawLoad === null) {
+    const weightMatch = line.match(/Weight:\s*([0-9.]+)\s*(kg|g)?/i);
+    if (weightMatch) {
+      const val = parseFloat(weightMatch[1]);
+      const unit = (weightMatch[2] || '').toLowerCase();
+      if (unit === 'g') {
+        rawLoad = val / 1000.0;
+      } else {
+        rawLoad = val;
+      }
     }
   }
 
@@ -2023,10 +2043,10 @@ function processIncomingSerialLine(line) {
     }
   }
 
-  // 8. Fallback: Detect tangle mentions anywhere in line (e.g. "SNAG DETECTED" or "TANGLE: LOW")
+  // 8. Fallback: Detect tangle mentions anywhere in line (e.g. "SNAG DETECTED" or "TANGLE DETECTED")
   if (rawTangle === null) {
     const upperLine = line.toUpperCase();
-    if (upperLine.includes('SNAG') || upperLine.includes('CRITICAL') || upperLine.includes('HIGH TANGLE')) {
+    if (upperLine.includes('SNAG') || upperLine.includes('CRITICAL') || upperLine.includes('HIGH TANGLE') || upperLine.includes('TANGLE DETECTED') || upperLine.includes('TANGLE')) {
       rawTangle = 'HIGH';
     } else if (upperLine.includes('MODERATE') || upperLine.includes('MEDIUM')) {
       rawTangle = 'MODERATE';
